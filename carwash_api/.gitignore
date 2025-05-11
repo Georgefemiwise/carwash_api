@@ -1,0 +1,6 @@
+.bolt
+.next
+.venv
+src
+*.sqlite3
+*__pycache__
