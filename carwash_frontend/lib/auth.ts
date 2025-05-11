@@ -5,7 +5,7 @@ import Cookies from "js-cookie";
 import { AuthResponse, LoginRequest, RegisterRequest, User } from "@/types";
 
 // Set token expiration time (e.g., 24 hours)
-const TOKEN_EXPIRATION = 24 * 60 * 60 * 1000; // milliseconds
+const TOKEN_EXPIRATION = 24 * 60 * 60 * 1000 ; // milliseconds
 
 export const setAuthToken = (access: string, refresh: string) => {
   const expires = new Date(new Date().getTime() + TOKEN_EXPIRATION);
