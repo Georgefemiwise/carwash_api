@@ -15,14 +15,16 @@ export const useServiceTypes = () => {
   const { data, isLoading, error } = useQuery<ServiceType[]>({
     queryKey: ['serviceTypes'],
     queryFn: async () => {
+      // const response = await apiClient.get("/service-requests");
       const response = await apiClient.get('/service-types');
       return response.data;
     },
     staleTime: 5 * 60 * 1000, // 5 minutes
   });
 
+
   return {
-    serviceTypes: data || [],
+    serviceTypes: data?.results ?? [],
     isLoading,
     error,
   };
@@ -97,7 +99,7 @@ export const useServiceRequestMutations = () => {
     { id: string; data: ServiceRequestUpdateRequest }
   >({
     mutationFn: async ({ id, data }) => {
-      const response = await apiClient.put(`/service-requests/${id}`, data);
+      const response = await apiClient.put(`/service-requests/${id}/`, data);
       return response.data;
     },
     onSuccess: (_, variables) => {
@@ -109,7 +111,7 @@ export const useServiceRequestMutations = () => {
   // Cancel a service request
   const cancelServiceRequest = useMutation<ApiResponse<ServiceRequest>, Error, string>({
     mutationFn: async (id) => {
-      const response = await apiClient.put(`/service-requests/${id}/cancel`);
+      const response = await apiClient.put(`/service-requests/${id}/cancel/`);
       return response.data;
     },
     onSuccess: (_, id) => {

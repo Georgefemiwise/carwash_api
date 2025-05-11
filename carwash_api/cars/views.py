@@ -2,8 +2,8 @@ from rest_framework import viewsets, filters, permissions, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
 # from django_filters.rest_framework import DjangoFilterBackend
-from .models import Car, ServiceRequest, Transaction
-from .serializers import CarSerializer, ServiceRequestSerializer, TransactionSerializer
+from .models import Car, ServiceRequest, ServiceType, Transaction
+from .serializers import CarSerializer, ServiceRequestSerializer, ServiceTypeSerializer, TransactionSerializer
 from .permissions import IsOwnerOrStaff, IsStaffUser
 
 class CarViewSet(viewsets.ModelViewSet):
@@ -62,6 +62,7 @@ class ServiceRequestViewSet(viewsets.ModelViewSet):
         return Response(ServiceRequestSerializer(service_request).data)
 
 class TransactionViewSet(viewsets.ModelViewSet):
+
     serializer_class = TransactionSerializer
     permission_classes = [permissions.IsAuthenticated, IsOwnerOrStaff]
     # filter_backends = [DjangoFilterBackend, filters.SearchFilter]
@@ -78,3 +79,7 @@ class TransactionViewSet(viewsets.ModelViewSet):
         if self.action in ['create', 'update', 'partial_update', 'destroy']:
             return [IsStaffUser()]
         return super().get_permissions()
+
+class ServiceTypeViewSet(viewsets.ModelViewSet):
+    queryset = ServiceType.objects.all()
+    serializer_class = ServiceTypeSerializer

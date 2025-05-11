@@ -7,20 +7,25 @@ import { ServiceCard } from "@/components/cards/service-card";
 import {
   useServiceRequests,
   useServiceRequestMutations,
+  useServiceTypes, // ✅ Import useServiceTypes
 } from "@/hooks/use-services";
-import { useUser } from "@/hooks/use-user";
+import { useCurrentUser } from "@/hooks/use-user";
 import { ServiceStatus, UserRole } from "@/types";
-import { Plus, Filter, RefreshCw } from "lucide-react";
+import { Plus, RefreshCw } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { ThemedSelect, SelectOption } from "@/components/ui/themed-select";
-import axios from "axios";
 
 export default function ServiceRequestsPage() {
   const router = useRouter();
-  const { currentUser } = useUser();
+  const { currentUser } = useCurrentUser();
+
+  // Filter states
   const [statusFilter, setStatusFilter] = useState<string>("");
 
-  // Determine filters based on user role
+  // ✅ Get service types for potential use (e.g., in filters or form options)
+  const { serviceTypes, isLoading: loadingServiceTypes } = useServiceTypes();
+
+  // Build filter object based on user role and selected status
   const filters = {
     ...(currentUser?.role === UserRole.CUSTOMER
       ? { customerId: currentUser.id }
@@ -34,6 +39,7 @@ export default function ServiceRequestsPage() {
   const { serviceRequests, isLoading } = useServiceRequests(filters);
   const { updateServiceRequest } = useServiceRequestMutations();
 
+  // Status options for filtering
   const statusOptions: SelectOption[] = [
     { value: "", label: "All Statuses" },
     { value: ServiceStatus.PENDING, label: "Pending" },
@@ -42,14 +48,17 @@ export default function ServiceRequestsPage() {
     { value: ServiceStatus.CANCELLED, label: "Cancelled" },
   ];
 
+  // Navigation to new request page
   const handleAddRequest = () => {
     router.push("/service-requests/new");
   };
 
+  // Update filter state
   const handleStatusChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setStatusFilter(e.target.value);
   };
 
+  // Update service request status
   const handleUpdateStatus = async (id: string, status: ServiceStatus) => {
     try {
       await updateServiceRequest.mutateAsync({
@@ -61,6 +70,7 @@ export default function ServiceRequestsPage() {
     }
   };
 
+  // Navigate to service detail page
   const viewServiceDetails = (id: string) => {
     router.push(`/service-requests/${id}`);
   };
@@ -78,15 +88,14 @@ export default function ServiceRequestsPage() {
           },
         ]}
       />
-     
 
       <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
+        {/* Status Filter Dropdown */}
         <div className="w-full sm:w-64">
           <ThemedSelect
             options={statusOptions}
             value={statusFilter}
             onChange={handleStatusChange}
-            icon={<Filter size={16} />}
           />
         </div>
 
@@ -95,6 +104,19 @@ export default function ServiceRequestsPage() {
         </div>
       </div>
 
+      {/* ✅ Optional: List available service types */}
+      {!loadingServiceTypes && serviceTypes.length > 0 && (
+        <div className="p-4 bg-muted/10 rounded-lg border border-border">
+          <h2 className="font-medium mb-2">Available Service Types:</h2>
+          <ul className="list-disc pl-5 text-sm text-muted-foreground">
+            {serviceTypes.map((type) => (
+              <li key={type.id}>{type.name}</li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      {/* Requests section */}
       {isLoading ? (
         <div className="space-y-4">
           {[...Array(3)].map((_, i) => (
@@ -117,6 +139,7 @@ export default function ServiceRequestsPage() {
         </div>
       ) : (
         <div className="text-center py-16 bg-muted/20 rounded-lg border border-border">
+          {/* No Requests UI */}
           <svg
             className="w-12 h-12 mx-auto text-muted-foreground"
             fill="none"

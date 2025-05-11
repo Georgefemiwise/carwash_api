@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Car, ServiceRequest, Transaction
+from .models import Car, ServiceRequest, ServiceType, Transaction
 
 @admin.register(Car)
 class CarAdmin(admin.ModelAdmin):
@@ -21,3 +21,10 @@ class TransactionAdmin(admin.ModelAdmin):
     list_filter = ('payment_method', 'timestamp')
     search_fields = ('service_request__car__license_plate', 'service_request__car__owner__email')
     date_hierarchy = 'timestamp'
+
+
+@admin.register(ServiceType)
+class ServiceTypeAdmin(admin.ModelAdmin):
+    list_display = ('id', 'name', 'price', 'duration_minutes', 'created_at')
+    search_fields = ('name', 'description')
+    list_filter = ('created_at', 'updated_at')

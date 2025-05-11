@@ -4,15 +4,16 @@ import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Wrench, Car, DollarSign, Clock, Users } from 'lucide-react';
 import { ThemedButton } from '@/components/ui/themed-button';
+import { getAccessToken } from '@/lib/auth';
 
 export default function Home() {
   const router = useRouter();
 
   // Redirect to dashboard if already authenticated
   useEffect(() => {
-    const token = document.cookie.includes('auth-token');
+    const token = getAccessToken();
     if (token) {
-      router.push('/dashboard');
+      router.push("/dashboard");
     }
   }, [router]);
 

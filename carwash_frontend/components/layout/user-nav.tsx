@@ -2,19 +2,18 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { useUser } from '@/hooks/use-user';
-import { useAuth } from '@/lib/auth';
+import {  useAuth } from "@/lib/auth";
 import { User, Settings, LogOut } from 'lucide-react';
+import { useCurrentUser } from '@/hooks/use-user';
 
 export function UserNav() {
   const [isOpen, setIsOpen] = useState(false);
-  const { currentUser } = useUser();
+  const { currentUser } = useCurrentUser();
   const { logout } = useAuth();
 
   const toggleDropdown = () => setIsOpen(!isOpen);
   const closeDropdown = () => setIsOpen(false);
 
-console.log(currentUser);
 
 
   if (!currentUser) {

@@ -21,10 +21,10 @@ tomorrow.setHours(9, 0, 0, 0);
 
 // Service request form schema
 const serviceRequestSchema = z.object({
-  carId: z.string().min(1, "Car is required"),
+  car: z.string().min(1, "Car is required"),
   serviceTypeId: z.string().min(1, "Service type is required"),
   scheduledAt: z.string().min(1, "Scheduled date is required"),
-  notes: z.string().optional(),
+  description: z.string().optional(),
 });
 
 type ServiceRequestFormValues = z.infer<typeof serviceRequestSchema>;
@@ -53,10 +53,10 @@ export function ServiceRequestForm({
     : format(tomorrow, "yyyy-MM-dd'T'HH:mm");
 
   const defaultValues: Partial<ServiceRequestFormValues> = {
-    carId: serviceRequest?.carId || "",
+    car: serviceRequest?.carId || "",
     serviceTypeId: serviceRequest?.serviceTypeId || "",
     scheduledAt: formattedScheduledAt,
-    notes: serviceRequest?.notes || "",
+    description:  serviceRequest?.description || "",
   };
 
   const {
@@ -72,10 +72,10 @@ export function ServiceRequestForm({
 
   useEffect(() => {
     // Set car ID if only one car is available and no car is selected
-    if (cars.length === 1 && !defaultValues.carId) {
-      setValue("carId", cars[0].id);
+    if (cars.length === 1 && !defaultValues.car) {
+      setValue("car", cars[0].id);
     }
-  }, [cars, defaultValues.carId, setValue]);
+  }, [cars, defaultValues.car, setValue]);
 
   const onSubmit = async (data: ServiceRequestFormValues) => {
     try {
@@ -83,9 +83,9 @@ export function ServiceRequestForm({
         await updateServiceRequest.mutateAsync({
           id: serviceRequest.id,
           data: {
-            serviceTypeId: data.serviceTypeId,
+            id: data.serviceTypeId,
             scheduledAt: data.scheduledAt,
-            notes: data.notes,
+            description: data.description,
           },
         });
       } else {
@@ -122,8 +122,8 @@ export function ServiceRequestForm({
         label="Car"
         options={carOptions}
         placeholder="Select a car"
-        {...register("carId")}
-        error={errors.carId?.message}
+        {...register("car")}
+        error={errors.car?.message}
         disabled={isEditing || carOptions.length === 0}
       />
 
@@ -157,7 +157,7 @@ export function ServiceRequestForm({
         <textarea
           className="textarea textarea-bordered h-24"
           placeholder="Any special requirements or information..."
-          {...register("notes")}
+          {...register("description")}
         />
       </div>
 

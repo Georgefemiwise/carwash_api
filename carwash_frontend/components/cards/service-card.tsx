@@ -73,9 +73,9 @@ export function ServiceCard({
             </div>
           )}
 
-          {service.notes && (
+          {service.description && (
             <div className="mt-2 p-3 bg-muted/30 rounded-md">
-              <p className="text-sm">{service.notes}</p>
+              <p className="text-sm">{service.description}</p>
             </div>
           )}
         </div>

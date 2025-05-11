@@ -15,7 +15,7 @@ import {
 } from 'lucide-react';
 import { useAuth } from '@/lib/auth';
 import { User as UserType, UserRole } from '@/types';
-import { useUser } from '@/hooks/use-user';
+import { useCurrentUser, useUser } from '@/hooks/use-user';
 
 const routes = [
   {
@@ -75,7 +75,7 @@ interface SidebarProps {
 export function Sidebar({ closeMobile }: SidebarProps) {
   const pathname = usePathname();
   const { logout } = useAuth();
-  const { currentUser } = useUser();
+  const { currentUser } = useCurrentUser();
   
   // Filter routes based on user role
   const filteredRoutes = routes.filter((route) => 

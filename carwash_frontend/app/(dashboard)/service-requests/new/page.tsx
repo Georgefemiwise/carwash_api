@@ -2,12 +2,12 @@
 
 import { PageHeader } from '@/components/layout/page-header';
 import { ServiceRequestForm } from '@/components/forms/service-request-form';
-import { useUser } from '@/hooks/use-user';
+import { useCurrentUser } from '@/hooks/use-user';
 import { useRouter } from 'next/navigation';
 
 export default function NewServiceRequestPage() {
   const router = useRouter();
-  const { currentUser } = useUser();
+  const { currentUser } = useCurrentUser();
   
   return (
     <div className="space-y-6 max-w-2xl mx-auto">

@@ -55,7 +55,7 @@ export interface CarCreateRequest {
   year: number;
   color: string;
   license_plate: string;
-  owner:string
+  owner: string;
 }
 
 export interface CarUpdateRequest {
@@ -64,7 +64,7 @@ export interface CarUpdateRequest {
   year?: number;
   color?: string;
   license_plate?: string;
-  owner:string
+  owner: string;
 }
 
 // Service Types
@@ -98,24 +98,25 @@ export interface ServiceRequest {
   completedAt?: string;
   assignedWorkerId?: string;
   assignedWorker?: User;
-  notes?: string;
+  description?: string;
   createdAt: string;
   updatedAt: string;
 }
 
 export interface ServiceRequestCreateRequest {
-  carId: string;
+  car: string;
   serviceTypeId: string;
   scheduledAt: string;
   notes?: string;
 }
 
 export interface ServiceRequestUpdateRequest {
+  id:string
   status?: ServiceStatus;
   scheduledAt?: string;
   completedAt?: string;
   assignedWorkerId?: string;
-  notes?: string;
+  description?: string;
 }
 
 // Transaction Types

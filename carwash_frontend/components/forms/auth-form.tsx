@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ThemedInput } from "@/components/ui/themed-input";
 import { ThemedButton } from "@/components/ui/themed-button";
-import { useAuth } from "@/lib/auth";
+import { getAccessToken, getRefreshToken, useAuth } from "@/lib/auth";
 import { useRouter } from "next/navigation";
 import { User, Mail, Lock, Phone } from "lucide-react";
 
@@ -66,7 +66,7 @@ export function AuthForm({ mode }: AuthFormProps) {
       if (mode === "login") {
         const user = await login(data as LoginFormValues);
         if (user) {
-          router.push("/dashboard");
+          router.replace("/dashboard");
         } else {
           setError("Invalid email or password");
         }
@@ -83,6 +83,7 @@ export function AuthForm({ mode }: AuthFormProps) {
       setError("An unexpected error occurred");
     }
   };
+
 
   return (
     <div className="w-full max-w-md mx-auto p-6 bg-card rounded-lg shadow-lg border border-border animate-slide-in">

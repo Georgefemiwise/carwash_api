@@ -2,7 +2,7 @@
 
 import { Header } from '@/components/layout/header';
 import { Sidebar } from '@/components/layout/sidebar';
-import { useUser } from '@/hooks/use-user';
+import { useCurrentUser } from "@/hooks/use-user";
 import { redirect } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
@@ -11,7 +11,7 @@ export default function DashboardLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const { currentUser, isLoading } = useUser();
+  const { currentUser, isLoading } = useCurrentUser();
   const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {

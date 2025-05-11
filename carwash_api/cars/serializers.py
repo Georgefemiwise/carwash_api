@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Car, ServiceRequest, Transaction
+from .models import Car, ServiceRequest, ServiceType, Transaction
 from staff.serializers import WorkerProfileSerializer
 
 class CarSerializer(serializers.ModelSerializer):
@@ -31,3 +31,9 @@ class TransactionSerializer(serializers.ModelSerializer):
         model = Transaction
         fields = ('id', 'service_request', 'service_request_details', 'amount', 'payment_method', 'timestamp')
         read_only_fields = ('id', 'timestamp', 'service_request_details')
+
+
+class ServiceTypeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ServiceType
+        fields = '__all__'

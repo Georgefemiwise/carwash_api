@@ -54,6 +54,7 @@ class ServiceRequest(models.Model):
         return f"Service for {self.car} - {self.status}"
 
 class Transaction(models.Model):
+
     PAYMENT_METHODS = [
         ('cash', 'Cash'),
         ('credit_card', 'Credit Card'),
@@ -78,3 +79,14 @@ class Transaction(models.Model):
     
     def __str__(self):
         return f"Transaction for {self.service_request} - {self.amount}"
+    
+class ServiceType(models.Model):
+    name = models.CharField(max_length=255)
+    description = models.TextField()
+    price = models.DecimalField(max_digits=10, decimal_places=2)
+    duration_minutes = models.PositiveIntegerField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.name
